@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-// Staggered words animation
+// Word animation (staggered)
 const wordAnimation = {
   hidden: { y: 40, opacity: 0 },
   visible: (i) => ({
@@ -11,12 +11,30 @@ const wordAnimation = {
   }),
 };
 
+// Floating particles variant (stable, no window calls)
+const particleVariant = {
+  initial: (custom) => ({
+    x: `${Math.random() * 100}%`,
+    y: Math.random() * 600,
+    opacity: 0.3,
+  }),
+  animate: {
+    y: -100,
+    opacity: [0.3, 0],
+    transition: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeOut",
+    },
+  },
+};
+
 function Hero() {
   const titleWords = ["Fuel", "Your", "Body", "with", "Premium", "Supplements"];
 
   return (
     <div className="relative w-full min-h-[550px] md:h-[650px] bg-gray-50 overflow-hidden rounded-b-[60px] md:rounded-b-[120px] shadow-xl mt-[1%]">
-      {/* Parallax Background */}
+      {/* Background Split */}
       <motion.div
         initial={{ x: "-100%" }}
         animate={{ x: 0 }}
@@ -29,14 +47,13 @@ function Hero() {
           animate={{ x: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="w-full md:w-1/2 bg-orange-500 clip-diagonal md:rounded-bl-[120px]"
-        ></motion.div>
+        />
       </motion.div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between h-full px-6 sm:px-10 md:px-20 py-10 md:py-0">
-        
+      <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center h-full px-6 sm:px-10 md:px-20 py-10 md:py-0">
         {/* Left Content */}
-        <div className="w-full md:w-1/2 flex flex-col gap-6 md:gap-8 text-center md:text-left">
+        <div className="flex flex-col gap-6 md:gap-8 text-center md:text-left">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
             {titleWords.map((word, i) => (
               <motion.span
@@ -71,16 +88,17 @@ function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <motion.button
-              whileHover={{ scale: 1.1 }}
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="px-6 sm:px-8 py-3 sm:py-4 bg-orange-500 text-white font-semibold text-lg rounded-full shadow-lg relative overflow-hidden"
+              whileHover={{ scale: 1.05 }}
+              animate={{ scale: [1, 1.03, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-orange-500 text-white font-semibold text-lg rounded-full shadow-lg"
             >
               Shop Now
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05, borderColor: "#fb923c", color: "#fb923c" }}
-              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-semibold text-lg rounded-full transition"
+              transition={{ type: "spring", stiffness: 200 }}
+              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-semibold text-lg rounded-full"
             >
               Learn More
             </motion.button>
@@ -89,20 +107,20 @@ function Hero() {
 
         {/* Right Image */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.5 }}
-          className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0"
+          transition={{ duration: 1, delay: 0.5 }}
+          className="flex justify-center"
         >
           <motion.div
-            animate={{ y: [0, -15, 0], rotate: [0, 2, -2, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ y: [0, -15, 0], x: [0, 5, -5, 0], rotate: [0, 2, -2, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             className="relative bg-white shadow-2xl border-4 border-orange-200 rounded-full p-6 flex items-center justify-center w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px]"
           >
             {/* Glow Border */}
             <motion.div
               animate={{ boxShadow: ["0 0 0px #fb923c", "0 0 40px #fb923c", "0 0 0px #fb923c"] }}
-              transition={{ duration: 3, repeat: Infinity }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="absolute inset-0 rounded-full"
             />
 
@@ -120,10 +138,11 @@ function Hero() {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
+            variants={particleVariant}
+            initial="initial"
+            animate="animate"
+            custom={i}
             className="absolute w-3 h-3 bg-orange-300 rounded-full opacity-40"
-            initial={{ x: Math.random() * window.innerWidth, y: Math.random() * 600 }}
-            animate={{ y: [null, -100], opacity: [0.3, 0] }}
-            transition={{ duration: 6 + Math.random() * 3, repeat: Infinity }}
           />
         ))}
       </div>
