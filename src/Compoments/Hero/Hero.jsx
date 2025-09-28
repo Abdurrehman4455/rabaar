@@ -11,7 +11,7 @@ const wordAnimation = {
   }),
 };
 
-// Floating particles variant (stable, no window calls)
+// Floating particles variant
 const particleVariant = {
   initial: (custom) => ({
     x: `${Math.random() * 100}%`,
@@ -96,7 +96,11 @@ function Hero() {
               Shop Now
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.05, borderColor: "#fb923c", color: "#fb923c" }}
+              whileHover={{
+                scale: 1.05,
+                borderColor: "#fb923c",
+                color: "#fb923c",
+              }}
               transition={{ type: "spring", stiffness: 200 }}
               className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 font-semibold text-lg rounded-full"
             >
@@ -105,7 +109,7 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right Image */}
+        {/* Right Image with 3D Rotation */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -113,21 +117,41 @@ function Hero() {
           className="flex justify-center"
         >
           <motion.div
-            animate={{ y: [0, -15, 0], x: [0, 5, -5, 0], rotate: [0, 2, -2, 0] }}
+            animate={{
+              y: [0, -15, 0],
+              x: [0, 5, -5, 0],
+              rotate: [0, 2, -2, 0],
+            }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             className="relative bg-white shadow-2xl border-4 border-orange-200 rounded-full p-6 flex items-center justify-center w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px]"
+            style={{ perspective: "1000px" }}
           >
             {/* Glow Border */}
             <motion.div
-              animate={{ boxShadow: ["0 0 0px #fb923c", "0 0 40px #fb923c", "0 0 0px #fb923c"] }}
+              animate={{
+                boxShadow: [
+                  "0 0 0px #fb923c",
+                  "0 0 40px #fb923c",
+                  "0 0 0px #fb923c",
+                ],
+              }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="absolute inset-0 rounded-full"
             />
 
-            <img
+            <motion.img
               src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?fm=jpg&q=60&w=3000"
-              alt="Orange White Supplement Capsules"
+              alt="3D Rotating Supplement Capsules"
               className="relative w-full h-full object-contain drop-shadow-2xl rounded-full"
+              animate={{
+                rotateY: [0, 360],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              style={{ transformStyle: "preserve-3d" }}
             />
           </motion.div>
         </motion.div>
